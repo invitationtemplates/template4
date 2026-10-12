@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 58px; /* keeps anchored pages clear of the sticky top bar */
+    scroll-snap-type: y proximity; /* each page settles into place; never traps tall content */
+  }
+  body {
+    @apply bg-[#EADBC4] font-body text-[16px] text-ink antialiased;
+    overflow-x: clip;
+  }
+  img {
+    -webkit-user-drag: none;
+  }
+  /* Cormorant and Playfair default to old-style figures; dates and countdowns need lining numerals. */
+  body,
+  .font-heading,
+  .font-body,
+  .font-display {
+    font-variant-numeric: lining-nums;
+  }
+  :focus-visible {
+    outline: 2px solid #b8862f;
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  ::selection {
+    background: #d9b56aaa;
+  }
+}
+
+@layer components {
+  /* The phone-shaped column; centred with a soft shadow on wider screens, like the reference. */
+  .page {
+    @apply relative mx-auto min-h-screen w-full max-w-[430px] overflow-x-clip bg-cream shadow-[0_0_60px_-18px_rgba(63,12,18,0.55)];
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(251, 229, 207, 0.55), transparent 55%),
+      radial-gradient(ellipse at 90% 40%, rgba(246, 232, 208, 0.7), transparent 55%);
+  }
+
+  /* Thin gold double border, like the printed card frames. */
+  .paper-card {
+    @apply relative rounded-2xl border border-gold-soft bg-gradient-to-br from-[#FFFBF1] to-[#FBEBD4] shadow-soft;
+    box-shadow:
+      inset 0 0 0 3px #fbf3e4,
+      inset 0 0 0 4px rgba(184, 134, 47, 0.3),
+      0 5px 14px -8px rgba(92, 18, 25, 0.35);
+  }
+
+  .maroon-text {
+    background: linear-gradient(100deg, #6a0c1b 0%, #9b2a3c 38%, #6a0c1b 55%, #8a1c30 78%, #6a0c1b 100%);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .gold-text {
+    background: linear-gradient(100deg, #94691d 0%, #e6cd98 30%, #b8862f 50%, #fff1c9 60%, #94691d 100%);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Luminous cream-gold lettering for use over dark artwork (the opening cover). */
+  .glow-text {
+    background: linear-gradient(100deg, #fff1c9 0%, #f1d58f 35%, #fff8e4 55%, #f1d58f 80%, #fff1c9 100%);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 2px 8px rgba(63, 12, 18, 0.85));
+    animation: shimmer 7s linear infinite;
+  }
+
+  .field {
+    @apply w-full rounded-lg border border-gold-soft bg-[#FFFBF1] py-3.5 pl-11 pr-3 font-body text-[19px] font-medium text-ink placeholder:text-ink-soft/70 focus:border-maroon focus:outline-none focus:ring-2 focus:ring-maroon/25;
+  }
+
+  .btn-maroon {
+    @apply relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-b from-[#94162b] to-maroon px-6 py-3 font-body text-[18px] font-bold tracking-wide text-[#FFF3DE] shadow-card transition-transform duration-200 hover:-translate-y-px active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-70;
+  }
+  /* A soft light sweep passes across the maroon buttons every few seconds. */
+  .btn-maroon:not(:disabled)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 35%, rgba(255, 235, 190, 0.35) 50%, transparent 65%);
+    transform: translateX(-130%);
+    animation: btn-shine 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+@keyframes btn-shine {
+  0%, 55% { transform: translateX(-130%); }
+  100% { transform: translateX(130%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
